@@ -8,6 +8,9 @@ include(GNUInstallDirs)
 set (VERSION_MAJOR 1)
 set (VERSION_MINOR 0)
 
+set(BIN_INSTALL_DIR "/usr/bin")
+set(CONFIG_INSTALL_DIR "/etc")
+
 find_package(INDI REQUIRED)
 find_package(ZLIB REQUIRED)
 find_package(Mosquitto REQUIRED)
@@ -28,3 +31,7 @@ target_link_libraries(astroberry-mqtt indiclient ${INDI_LIBRARIES} ${ZLIB_LIBRAR
 IF (UNIX AND NOT APPLE)
     target_link_libraries(astroberry-mqtt -lpthread)
 ENDIF ()
+
+install(TARGETS astroberry-mqtt RUNTIME DESTINATION bin )
+install(FILES ${CMAKE_CURRENT_SOURCE_DIR}/astroberry-mqtt.service DESTINATION ${CONFIG_INSTALL_DIR}/systemd/system)
+install(FILES ${CMAKE_CURRENT_SOURCE_DIR}/astroberry-mqtt.conf DESTINATION ${CONFIG_INSTALL_DIR})
